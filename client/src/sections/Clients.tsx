@@ -55,7 +55,7 @@ const Clients = () => {
               <div className="w-32 h-32 md:w-40 md:h-40 rounded-xl bg-white/5 border border-white/10 p-6 flex items-center justify-center mb-4 hover:border-primary/30 transition-all duration-300">
                 <img 
                   src={client.logo} 
-                  alt={`${client.name} logo`} 
+                  alt={`${client.name} company logo`} 
                   className="w-full max-h-full object-contain" 
                 />
               </div>
