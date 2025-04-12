@@ -14,6 +14,7 @@ import CaseStudies from "@/pages/CaseStudies";
 import Cursor from "@/components/Cursor";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SplashScreen from "@/components/SplashScreen"; // ✅ IMPORT splash
 import { motion, AnimatePresence } from "framer-motion";
 
 function Router() {
@@ -24,14 +25,13 @@ function Router() {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-    
+
     checkMobile();
     window.addEventListener("resize", checkMobile);
-    
+
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Scroll to top on route change
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
@@ -61,8 +61,18 @@ function Router() {
   );
 }
 
-function App() {
-  return <Router />;
+function App(): JSX.Element {
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 3000); // match your splash screen timing
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return showSplash ? <SplashScreen /> : <Router />;
 }
 
 export default App;
