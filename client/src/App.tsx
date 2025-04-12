@@ -14,39 +14,24 @@ import CaseStudies from "@/pages/CaseStudies";
 import Cursor from "@/components/Cursor";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SplashScreen from "@/components/SplashScreen"; // ✅ IMPORT splash
 import { motion, AnimatePresence } from "framer-motion";
-import SplashScreen from "@/components/SplashScreen"; // Make sure you import the SplashScreen
 
 function Router() {
   const [isMobile, setIsMobile] = useState(false);
   const [location] = useLocation();
-  const [showSplash, setShowSplash] = useState(() => {
-    return sessionStorage.getItem("splashShown") !== "true";
-  });
-
-  useEffect(() => {
-    if (showSplash) {
-      const timer = setTimeout(() => {
-        sessionStorage.setItem("splashShown", "true");
-        setShowSplash(false);
-      }, 3000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [showSplash]);
 
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-    
+
     checkMobile();
     window.addEventListener("resize", checkMobile);
-    
+
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Scroll to top on route change
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
@@ -57,22 +42,18 @@ function Router() {
       <div className="progress-bar" />
       <Navbar />
       <AnimatePresence mode="wait">
-        {showSplash ? (
-          <SplashScreen />
-        ) : (
-          <Switch>
-            <Route path="/" component={Home} />
-            <Route path="/devops" component={DevOps} />
-            <Route path="/influencer-marketing" component={InfluencerMarketing} />
-            <Route path="/careers" component={Careers} />
-            <Route path="/ux-ui-design" component={UXUIDesign} />
-            <Route path="/web-development" component={WebDevelopment} />
-            <Route path="/mobile-development" component={MobileDevelopment} />
-            <Route path="/digital-marketing" component={DigitalMarketing} />
-            <Route path="/case-studies" component={CaseStudies} />
-            <Route component={NotFound} />
-          </Switch>
-        )}
+        <Switch>
+          <Route path="/" component={Home} />
+          <Route path="/devops" component={DevOps} />
+          <Route path="/influencer-marketing" component={InfluencerMarketing} />
+          <Route path="/careers" component={Careers} />
+          <Route path="/ux-ui-design" component={UXUIDesign} />
+          <Route path="/web-development" component={WebDevelopment} />
+          <Route path="/mobile-development" component={MobileDevelopment} />
+          <Route path="/digital-marketing" component={DigitalMarketing} />
+          <Route path="/case-studies" component={CaseStudies} />
+          <Route component={NotFound} />
+        </Switch>
       </AnimatePresence>
       <Footer />
       <Toaster />
@@ -80,8 +61,18 @@ function Router() {
   );
 }
 
-function App() {
-  return <Router />;
+function App(): JSX.Element {
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 3000); // match your splash screen timing
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return showSplash ? <SplashScreen /> : <Router />;
 }
 
 export default App;
