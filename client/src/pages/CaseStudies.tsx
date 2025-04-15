@@ -1,18 +1,47 @@
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { ArrowRight, Calendar, Tag, Users, Briefcase } from 'lucide-react';
 import ThreeDScene from '@/components/3DScene';
-import { 
-  Briefcase, 
-  ArrowRight, 
-  ChevronRight,
-  Calendar, 
-  Tag,
-  Users
-} from 'lucide-react';
 
 const CaseStudies = () => {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [highlightedStudy, setHighlightedStudy] = useState<string | null>(null);
+  const [isFilterVisible, setIsFilterVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setIsFilterVisible(currentScrollY <= lastScrollY || currentScrollY < 100);
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+      const study = caseStudies.find(
+        study => study.slug === hash || study.id.toString() === hash
+      );
+      if (study) {
+        setHighlightedStudy(study.slug || study.id.toString());
+        const element = document.getElementById(hash);
+        if (element) {
+          setTimeout(() => {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 100);
+        }
+      }
+    }
+  }, []);
+
   const caseStudies = [
     {
       id: 1,
+      slug: "fintech-revolution",
       title: "Financial Dashboard Redesign",
       client: "CapitalTrack",
       category: "UX/UI Design",
@@ -23,6 +52,7 @@ const CaseStudies = () => {
     },
     {
       id: 2,
+      slug: "health-wellness-platform",
       title: "E-commerce Mobile App",
       client: "ShopWave",
       category: "Mobile Development",
@@ -33,6 +63,7 @@ const CaseStudies = () => {
     },
     {
       id: 3,
+      slug: "retail-transformation",
       title: "SaaS Marketing Platform",
       client: "MarketBoost",
       category: "Web Development",
@@ -43,6 +74,7 @@ const CaseStudies = () => {
     },
     {
       id: 4,
+      slug: "immersive-entertainment",
       title: "Healthcare Patient Portal",
       client: "MediCare Plus",
       category: "Web Development",
@@ -53,6 +85,7 @@ const CaseStudies = () => {
     },
     {
       id: 5,
+      slug: "social-media-growth",
       title: "Social Media Growth Strategy",
       client: "TrendX",
       category: "Digital Marketing",
@@ -63,6 +96,7 @@ const CaseStudies = () => {
     },
     {
       id: 6,
+      slug: "enterprise-devops",
       title: "Enterprise DevOps Implementation",
       client: "TechCorp Global",
       category: "DevOps",
@@ -73,6 +107,7 @@ const CaseStudies = () => {
     },
     {
       id: 7,
+      slug: "influencer-campaign",
       title: "Influencer Campaign for Product Launch",
       client: "EcoStyle",
       category: "Influencer Marketing",
@@ -83,6 +118,7 @@ const CaseStudies = () => {
     },
     {
       id: 8,
+      slug: "ai-powered-customer-service",
       title: "AI-Powered Customer Service Solution",
       client: "ServiceNow",
       category: "Web Development",
@@ -103,9 +139,13 @@ const CaseStudies = () => {
     "Influencer Marketing"
   ];
 
+  const filteredStudies = selectedCategory === "All" 
+    ? caseStudies 
+    : caseStudies.filter(study => study.category === selectedCategory);
+
   return (
     <motion.main
-      className="bg-dark text-white font-inter" 
+      className="bg-dark text-white font-inter relative" 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -118,7 +158,7 @@ const CaseStudies = () => {
         <div className="container mx-auto px-4 md:px-8 py-20 relative z-10">
           <div className="max-w-3xl">
             <motion.h1 
-              className="text-4xl md:text-6xl font-poppins font-bold mb-6"
+              className="text-4xl sm:text-5xl md:text-6xl font-poppins font-bold mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
@@ -127,7 +167,7 @@ const CaseStudies = () => {
             </motion.h1>
             
             <motion.p 
-              className="text-xl md:text-2xl text-white/70 mb-12"
+              className="text-lg sm:text-xl md:text-2xl text-white/70 mb-12"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -158,232 +198,169 @@ const CaseStudies = () => {
           </div>
         </motion.div>
       </section>
-      
+
       {/* Categories Filter */}
-      <section className="py-12 bg-darker sticky top-[72px] z-20 border-b border-white/10">
+      <motion.section 
+        className="py-12 bg-darker sticky top-[72px] z-20 border-b border-white/10"
+        initial={{ opacity: 1, y: 0 }}
+        animate={{ 
+          opacity: isFilterVisible ? 1 : 0,
+          y: isFilterVisible ? 0 : -20,
+          pointerEvents: isFilterVisible ? 'auto' : 'none'
+        }}
+        transition={{ duration: 0.3 }}
+      >
         <div className="container mx-auto px-4 md:px-8">
-          <div className="flex flex-wrap gap-4">
+          <motion.div 
+            className="flex flex-wrap gap-2 sm:gap-4"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             {categories.map((category, index) => (
               <motion.button
                 key={category}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
-                className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
-                  index === 0 ? 'bg-primary text-white' : 'bg-white/5 text-white/70 hover:bg-white/10'
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 sm:px-6 py-2 rounded-full text-sm sm:text-base transition-all ${
+                  selectedCategory === category
+                    ? 'bg-primary text-white'
+                    : 'bg-white/5 text-white/70 hover:bg-white/10'
                 }`}
               >
                 {category}
               </motion.button>
             ))}
-          </div>
+          </motion.div>
         </div>
-      </section>
-      
+      </motion.section>
+
       {/* Case Studies Grid */}
       <section className="py-20 md:py-32 bg-dark">
         <div className="container mx-auto px-4 md:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
-            {caseStudies.map((study, index) => (
+          <motion.div 
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.1
+                }
+              }
+            }}
+          >
+            {filteredStudies.map((study, index) => (
               <motion.div
                 key={study.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group cursor-pointer"
-              >
-                <div className="overflow-hidden rounded-xl mb-6">
-                  <img 
-                    src={study.image} 
-                    alt={study.title} 
-                    className="w-full aspect-[16/9] object-cover transition-transform duration-500 group-hover:scale-105" 
-                  />
-                </div>
-                
-                <div className="flex items-center space-x-3 mb-3">
-                  <span className="text-primary text-sm font-medium">{study.category}</span>
-                  <span className="text-white/30">•</span>
-                  <div className="flex items-center text-white/50 text-sm">
-                    <Calendar className="w-4 h-4 mr-1" />
-                    {study.date}
-                  </div>
-                </div>
-                
-                <h3 className="text-2xl font-poppins font-bold mb-3 group-hover:text-primary transition-colors">{study.title}</h3>
-                <p className="text-white/70 mb-4">{study.summary}</p>
-                
-                <div className="flex items-center justify-between">
-                  <div className="flex flex-wrap gap-2">
-                    {study.tags.slice(0, 2).map((tag, i) => (
-                      <span 
-                        key={i} 
-                        className="inline-flex items-center px-3 py-1 rounded-full text-xs bg-white/5 text-white/60"
-                      >
-                        <Tag className="w-3 h-3 mr-1" /> {tag}
-                      </span>
-                    ))}
-                    {study.tags.length > 2 && 
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs bg-white/5 text-white/60">
-                        +{study.tags.length - 2}
-                      </span>
+                id={study.slug || study.id.toString()}
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                      duration: 0.5
                     }
+                  }
+                }}
+                className={`group bg-dark/50 rounded-lg overflow-hidden transition-all duration-300 ${
+                  highlightedStudy === (study.slug || study.id.toString())
+                    ? 'ring-2 ring-primary scale-[1.02]'
+                    : 'hover:scale-[1.02]'
+                }`}
+              >
+                <div className="relative h-48 sm:h-56 overflow-hidden">
+                  <motion.img 
+                    src={study.image} 
+                    alt={study.title}
+                    className="w-full h-full object-cover"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.4 }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-dark/90 to-transparent" />
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <motion.span 
+                      className="inline-block px-3 py-1 bg-primary/90 text-white text-xs sm:text-sm rounded-full mb-2"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      {study.category}
+                    </motion.span>
+                    <motion.h3 
+                      className="text-lg sm:text-xl font-bold text-white line-clamp-2"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      {study.title}
+                    </motion.h3>
                   </div>
-                  
-                  <a 
-                    href={`#case-study-${study.id}`} 
-                    className="flex items-center text-primary font-medium group-hover:text-primary/80 transition-colors"
+                </div>
+                <div className="p-4 sm:p-6">
+                  <motion.div 
+                    className="flex flex-wrap items-center gap-2 sm:gap-4 text-white/70 text-xs sm:text-sm mb-3 sm:mb-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.4 }}
                   >
-                    View Details <ChevronRight className="ml-1 w-5 h-5" />
-                  </a>
+                    <div className="flex items-center">
+                      <Calendar className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                      {study.date}
+                    </div>
+                    <div className="flex items-center">
+                      <Users className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                      {study.client}
+                    </div>
+                  </motion.div>
+                  <motion.p 
+                    className="text-white/70 text-sm sm:text-base mb-4 sm:mb-6 line-clamp-3"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    {study.summary}
+                  </motion.p>
+                  <motion.div 
+                    className="flex flex-wrap gap-2 mb-4 sm:mb-6"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.6 }}
+                  >
+                    {study.tags.map((tag, tagIndex) => (
+                      <motion.span 
+                        key={tag} 
+                        className="px-2 sm:px-3 py-1 bg-primary/10 text-primary text-xs sm:text-sm rounded-full"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.7 + tagIndex * 0.1 }}
+                      >
+                        {tag}
+                      </motion.span>
+                    ))}
+                  </motion.div>
+                  <motion.button 
+                    className="flex items-center text-primary hover:text-primary/80 transition-colors text-sm sm:text-base group"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.8 }}
+                    whileHover={{ x: 5 }}
+                  >
+                    Read Full Case Study
+                    <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                  </motion.button>
                 </div>
               </motion.div>
             ))}
-          </div>
-        </div>
-      </section>
-      
-      {/* Results Showcase */}
-      <section className="py-20 md:py-32 bg-darker relative overflow-hidden">
-        <motion.div 
-          className="absolute w-96 h-96 rounded-full bg-primary/5 blur-3xl top-1/2 -right-48"
-          animate={{ 
-            y: [0, 50, 0],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{ 
-            duration: 15, 
-            repeat: Infinity,
-            repeatType: "reverse" 
-          }}
-        />
-        
-        <div className="container mx-auto px-4 md:px-8 relative z-10">
-          <motion.div 
-            className="max-w-3xl mx-auto text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-3xl md:text-5xl font-poppins font-bold mb-6">Measurable Results</h2>
-            <p className="text-xl text-white/70">
-              Our work delivers tangible outcomes that drive business growth and success.
-            </p>
-          </motion.div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <ResultCard 
-              number="250+" 
-              label="Projects Completed" 
-              icon={<Briefcase className="w-6 h-6 text-primary" />} 
-            />
-            <ResultCard 
-              number="180%" 
-              label="Average ROI" 
-              icon={<ArrowRight className="w-6 h-6 text-primary" />} 
-            />
-            <ResultCard 
-              number="95%" 
-              label="Client Retention" 
-              icon={<Users className="w-6 h-6 text-primary" />} 
-            />
-            <ResultCard 
-              number="12+" 
-              label="Industry Awards" 
-              icon={<Tag className="w-6 h-6 text-primary" />} 
-            />
-          </div>
-          
-          {/* Testimonial */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-24 max-w-4xl mx-auto p-10 bg-white/5 rounded-2xl border border-white/10 relative"
-          >
-            <div className="absolute -top-6 left-10 text-primary text-8xl opacity-20">"</div>
-            <div className="relative z-10">
-              <p className="text-xl md:text-2xl text-white/80 italic mb-8">
-                Novixo's approach to our project was exceptional from start to finish. They took the time to understand our unique challenges and delivered a solution that exceeded our expectations in every way.
-              </p>
-              <div className="flex items-center">
-                <div className="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center text-xl font-bold text-primary mr-4">
-                  SJ
-                </div>
-                <div>
-                  <h4 className="text-lg font-poppins font-semibold">Sarah Johnson</h4>
-                  <p className="text-white/60">CTO, MarketBoost</p>
-                </div>
-              </div>
-            </div>
           </motion.div>
         </div>
-      </section>
-      
-      {/* CTA Section */}
-      <section className="py-20 md:py-32 bg-primary/10 relative overflow-hidden">
-        <div className="container mx-auto px-4 md:px-8 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-3xl md:text-5xl font-poppins font-bold mb-6"
-            >
-              Ready to Create Your Success Story?
-            </motion.h2>
-            
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-xl text-white/70 mb-10"
-            >
-              Let's discuss how we can help your business achieve its digital goals and create your own success story.
-            </motion.p>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <a href="#contact" className="magnetic-btn bg-primary hover:bg-opacity-90 text-white font-medium py-4 px-8 rounded-full inline-flex items-center transition-all">
-                Start a Project <ArrowRight className="ml-2 h-5 w-5" />
-              </a>
-            </motion.div>
-          </div>
-        </div>
-        
-        {/* Background patterns */}
-        <svg className="absolute bottom-0 left-0 w-full h-auto opacity-10" viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">
-          <path fill="#FF6F61" fillOpacity="1" d="M0,128L48,117.3C96,107,192,85,288,90.7C384,96,480,128,576,149.3C672,171,768,181,864,165.3C960,149,1056,107,1152,101.3C1248,96,1344,128,1392,144L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-        </svg>
       </section>
     </motion.main>
-  );
-};
-
-// Result Card Component
-const ResultCard = ({ number, label, icon }: { number: string, label: string, icon: React.ReactNode }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-      className="p-8 border border-white/10 rounded-xl bg-dark/50 hover:border-primary/30 transition-all duration-300 text-center group"
-    >
-      <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-primary/10 transition-colors">
-        {icon}
-      </div>
-      <h3 className="text-4xl md:text-5xl font-poppins font-bold text-primary mb-2">{number}</h3>
-      <p className="text-white/70">{label}</p>
-    </motion.div>
   );
 };
 

@@ -12,55 +12,77 @@ export function useCustomCursor({ cursorRef, followerRef }: UseCustomCursorProps
 
     if (!cursor || !follower) return;
 
+    // Hide default cursor
+    document.body.style.cursor = 'none';
+
+    let followerX = 0;
+    let followerY = 0;
+    let mouseX = 0;
+    let mouseY = 0;
+    let animationFrameId: number;
+
     const onMouseMove = (e: MouseEvent) => {
-      // Update cursor position
-      cursor.style.left = `${e.clientX}px`;
-      cursor.style.top = `${e.clientY}px`;
-      
-      // Delay follower position for trailing effect
-      setTimeout(() => {
-        if (follower) {
-          follower.style.left = `${e.clientX}px`;
-          follower.style.top = `${e.clientY}px`;
-        }
-      }, 50);
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursor.style.left = `${mouseX}px`;
+      cursor.style.top = `${mouseY}px`;
     };
+
+    // Animate follower to smoothly catch up to the cursor
+    const animateFollower = () => {
+      followerX += (mouseX - followerX) * 0.25; // Higher = faster
+      followerY += (mouseY - followerY) * 0.25;
+      follower.style.left = `${followerX}px`;
+      follower.style.top = `${followerY}px`;
+      animationFrameId = requestAnimationFrame(animateFollower);
+    };
+
+    animationFrameId = requestAnimationFrame(animateFollower);
 
     // Increase cursor size on hover over interactive elements
     const onElementHover = () => {
-      cursor.style.width = '30px';
-      cursor.style.height = '30px';
-      follower.style.width = '60px';
-      follower.style.height = '60px';
+      cursor.classList.add('expanded');
+      follower.classList.add('expanded');
     };
 
     // Reset cursor size
     const onElementLeave = () => {
-      cursor.style.width = '20px';
-      cursor.style.height = '20px';
-      follower.style.width = '40px';
-      follower.style.height = '40px';
+      cursor.classList.remove('expanded');
+      follower.classList.remove('expanded');
     };
 
-    // Add event listeners
+    // Hide cursor when mouse leaves window
+    const onMouseLeave = () => {
+      cursor.style.opacity = '0';
+      follower.style.opacity = '0';
+    };
+
+    // Show cursor when mouse enters window
+    const onMouseEnter = () => {
+      cursor.style.opacity = '1';
+      follower.style.opacity = '1';
+    };
+
     document.addEventListener('mousemove', onMouseMove);
-    
-    // Apply hover effects to interactive elements
-    const hoverElements = document.querySelectorAll('a, button, input, textarea, select, .hover-scale');
-    
+    document.addEventListener('mouseleave', onMouseLeave);
+    document.addEventListener('mouseenter', onMouseEnter);
+
+    const hoverElements = document.querySelectorAll('a, button, input, textarea, select, [data-cursor="pointer"]');
     hoverElements.forEach(element => {
       element.addEventListener('mouseenter', onElementHover);
       element.addEventListener('mouseleave', onElementLeave);
     });
 
-    // Cleanup function
     return () => {
       document.removeEventListener('mousemove', onMouseMove);
-      
+      document.removeEventListener('mouseleave', onMouseLeave);
+      document.removeEventListener('mouseenter', onMouseEnter);
+      document.body.style.cursor = 'auto';
       hoverElements.forEach(element => {
         element.removeEventListener('mouseenter', onElementHover);
         element.removeEventListener('mouseleave', onElementLeave);
       });
+      cancelAnimationFrame(animationFrameId);
     };
   }, [cursorRef, followerRef]);
 }

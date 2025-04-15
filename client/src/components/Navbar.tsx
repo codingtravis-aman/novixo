@@ -38,7 +38,7 @@ const Navbar = () => {
         
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
-          <a href="#work" className="text-white/80 hover:text-primary transition-colors">Work</a>
+          <Link href="/work" className="text-white/80 hover:text-primary transition-colors">Work</Link>
           
           {/* Services Dropdown */}
           <div className="relative group">
@@ -62,8 +62,8 @@ const Navbar = () => {
           </div>
           
           <Link href="/case-studies" className="text-white/80 hover:text-primary transition-colors">Case Studies</Link>
-          <a href="#about" className="text-white/80 hover:text-primary transition-colors">About</a>
-          <a href="#contact" className="text-white/80 hover:text-primary transition-colors">Contact</a>
+          <Link href="/about" className="text-white/80 hover:text-primary transition-colors">About</Link>
+          <Link href="/contact" className="text-white/80 hover:text-primary transition-colors">Contact</Link>
           <Link href="/careers" className="text-white/80 hover:text-primary transition-colors">Careers</Link>
         </nav>
         

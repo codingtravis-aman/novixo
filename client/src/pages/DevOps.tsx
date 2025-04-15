@@ -10,12 +10,32 @@ import {
   Layers,
   ServerCrash,
   ArrowRight,
-  BarChart3
+  BarChart3,
+  CheckCircle
 } from 'lucide-react';
-import ThreeDScene from '@/components/3DScene';
 
 const DevOps = () => {
-  const devopsFeatures = [
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5 }
+    }
+  };
+
+  const features = [
     {
       icon: <GitBranch className="h-6 w-6" />,
       title: "CI/CD Pipelines",
@@ -48,7 +68,7 @@ const DevOps = () => {
     }
   ];
 
-  const caseStudies = [
+  const projects = [
     {
       title: "E-commerce Platform Migration",
       description: "Migrated a high-traffic e-commerce platform to a scalable cloud infrastructure with zero downtime.",
@@ -68,37 +88,92 @@ const DevOps = () => {
         { value: "5x", label: "Release frequency increase" }
       ],
       image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80"
+    },
+    {
+      title: "Healthcare Infrastructure Modernization",
+      description: "Redesigned infrastructure for a healthcare provider, ensuring HIPAA compliance while improving scalability.",
+      metrics: [
+        { value: "100%", label: "HIPAA compliance" },
+        { value: "60%", label: "Infrastructure cost savings" },
+        { value: "8x", label: "Deployment frequency" }
+      ],
+      image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80"
     }
   ];
 
+  const steps = [
+    {
+      number: "01",
+      title: "Assessment & Discovery",
+      description: "We evaluate your current infrastructure, workflows, and identify opportunities for improvement."
+    },
+    {
+      number: "02",
+      title: "Strategy Development",
+      description: "We create a customized DevOps roadmap aligned with your business goals and technical requirements."
+    },
+    {
+      number: "03",
+      title: "Implementation",
+      description: "Our experts implement tools, automations, and processes tailored to your organization's needs."
+    },
+    {
+      number: "04",
+      title: "Training & Knowledge Transfer",
+      description: "We train your team on best practices and new tools to ensure long-term success."
+    },
+    {
+      number: "05",
+      title: "Continuous Improvement",
+      description: "We provide ongoing support and optimization to ensure your DevOps processes evolve with your business."
+    }
+  ];
+
+  const benefits = [
+    "Increased deployment frequency",
+    "Reduced time to market",
+    "Lower failure rate of new releases",
+    "Shortened lead time between fixes",
+    "Improved mean time to recovery",
+    "Enhanced scalability and reliability",
+    "Better resource utilization",
+    "Increased security and compliance",
+    "Improved team collaboration",
+    "Reduced operational costs"
+  ];
+
   return (
-    <motion.main
-      className="bg-dark text-white font-inter" 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
+      className="min-h-screen bg-darker"
     >
-      {/* Hero Section with 3D Background */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
-        <ThreeDScene />
+      {/* Hero Section */}
+      <section className="relative py-20 md:py-32 overflow-hidden bg-gradient-to-br from-darker via-dark to-darker">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent opacity-50" />
         
-        <div className="container mx-auto px-4 md:px-8 py-20 relative z-10">
-          <div className="max-w-3xl">
+        <div className="container mx-auto px-4 md:px-8 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+            className="max-w-3xl"
+          >
             <motion.h1 
-              className="text-4xl md:text-6xl font-poppins font-bold mb-6"
+              className="text-4xl md:text-6xl font-bold mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
             >
               DevOps <span className="text-primary">Services</span>
             </motion.h1>
             
-            <motion.p 
-              className="text-xl md:text-2xl text-white/70 mb-12"
+            <motion.p
+              className="text-xl text-white/70 mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
             >
               Streamline your development and operations with our comprehensive DevOps solutions. We bridge the gap between development and operations to deliver faster, more reliable software.
             </motion.p>
@@ -106,316 +181,261 @@ const DevOps = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
               className="flex flex-wrap gap-4"
             >
-              <a href="#contact" className="magnetic-btn bg-primary hover:bg-opacity-90 text-white font-medium py-4 px-8 rounded-full transition-all">
+              <a href="#contact" className="px-8 py-4 bg-primary hover:bg-primary/90 text-white rounded-lg transition-colors duration-300 flex items-center gap-2">
                 Get Started
+                <ArrowRight className="w-5 h-5" />
               </a>
-              <a href="#services" className="magnetic-btn bg-transparent border border-white/20 hover:border-white/40 text-white font-medium py-4 px-8 rounded-full transition-all">
+              <a href="#features" className="px-8 py-4 bg-white/5 hover:bg-white/10 text-white rounded-lg border border-white/10 transition-colors duration-300">
                 Explore Services
               </a>
             </motion.div>
-          </div>
+          </motion.div>
         </div>
         
-        {/* Floating Server Icons */}
-        <motion.div 
-          className="absolute right-10 md:right-20 top-1/3 transform -translate-y-1/2"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
+        {/* Decorative Elements */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.8 }}
+          className="absolute right-0 top-1/3 -translate-y-1/2 hidden lg:block"
         >
-          <div className="relative">
-            <motion.div 
-              className="absolute inset-0 bg-primary/10 rounded-2xl blur-md"
-              animate={{ 
-                scale: [1, 1.1, 1],
-              }}
-              transition={{ duration: 3, repeat: Infinity }}
-            />
-            <div className="w-20 h-20 md:w-32 md:h-32 bg-dark/80 backdrop-blur-sm rounded-2xl border border-white/10 flex items-center justify-center relative z-10">
-              <Server className="w-10 h-10 md:w-16 md:h-16 text-primary" />
-            </div>
-          </div>
-          
-          <motion.div 
-            className="w-16 h-16 md:w-24 md:h-24 bg-dark/80 backdrop-blur-sm rounded-2xl border border-white/10 flex items-center justify-center mt-6 ml-12"
-            animate={{ 
-              y: [0, 10, 0],
-            }}
-            transition={{ duration: 4, repeat: Infinity }}
-          >
-            <FileCode className="w-8 h-8 md:w-12 md:h-12 text-primary/80" />
-          </motion.div>
-          
-          <motion.div 
-            className="w-12 h-12 md:w-20 md:h-20 bg-dark/80 backdrop-blur-sm rounded-2xl border border-white/10 flex items-center justify-center mt-4 ml-4"
-            animate={{ 
-              y: [0, -10, 0],
-            }}
-            transition={{ duration: 3.5, repeat: Infinity, delay: 0.5 }}
-          >
-            <Layers className="w-6 h-6 md:w-10 md:h-10 text-primary/60" />
-          </motion.div>
+          <Server className="w-64 h-64 text-primary/10" />
         </motion.div>
       </section>
-      
-      {/* Services Overview */}
-      <section id="services" className="py-20 md:py-32 bg-darker relative overflow-hidden">
-        <div className="container mx-auto px-4 md:px-8 relative z-10">
-          <motion.div 
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
+
+      {/* Features Section */}
+      <section id="features" className="py-20 md:py-32 bg-dark">
+        <div className="container mx-auto px-4 md:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-5xl font-poppins font-bold mb-6">Our DevOps Services</h2>
-            <p className="text-xl text-white/70 max-w-3xl mx-auto">
-              Our comprehensive DevOps services help organizations automate and optimize their development and deployment processes.
+            <h2 className="text-3xl md:text-5xl font-bold mb-6">Our DevOps Services</h2>
+            <p className="text-lg text-white/70 max-w-3xl mx-auto">
+              We provide end-to-end DevOps solutions that streamline your development pipeline and enhance operational efficiency.
             </p>
           </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {devopsFeatures.map((feature, index) => (
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+          >
+            {features.map((feature, index) => (
               <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="p-8 border border-white/10 hover:border-primary/30 rounded-xl bg-dark/50 hover:bg-dark/80 transition-all duration-300"
+                key={index}
+                variants={itemVariants}
+                className="bg-darker p-8 rounded-2xl border border-white/5 hover:border-primary/20 transition-all duration-300"
               >
                 <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 text-primary">
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-poppins font-bold mb-3">{feature.title}</h3>
+                <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
                 <p className="text-white/70">{feature.description}</p>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
       
       {/* Process Section */}
-      <section className="py-20 md:py-32 bg-dark relative overflow-hidden">
-        <div className="container mx-auto px-4 md:px-8 relative z-10">
-          <motion.div 
-            className="mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-3xl md:text-5xl font-poppins font-bold mb-6">Our DevOps Process</h2>
-            <p className="text-xl text-white/70 max-w-3xl">
-              We implement a proven methodology to modernize your development and operations processes.
-            </p>
-          </motion.div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {[
-              { number: "01", title: "Assessment", description: "We evaluate your current workflows, tools, and infrastructure to identify opportunities for improvement." },
-              { number: "02", title: "Strategy", description: "Our experts develop a tailored DevOps roadmap aligned with your business objectives and technical requirements." },
-              { number: "03", title: "Implementation", description: "We configure and deploy the necessary tools and automation workflows while training your team." },
-              { number: "04", title: "Optimization", description: "Continuous monitoring and refinement of your DevOps practices to ensure ongoing improvement." }
-            ].map((step, index) => (
-              <motion.div
-                key={step.number}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="relative"
-              >
-                <div className="p-8 border border-white/10 rounded-xl bg-dark/50 h-full">
-                  <div className="absolute -top-4 -left-4 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-poppins font-bold">
-                    {step.number}
-                  </div>
-                  <h3 className="text-xl font-poppins font-bold mb-3 mt-6">{step.title}</h3>
-                  <p className="text-white/70">{step.description}</p>
-                </div>
-                
-                {index < 3 && (
-                  <div className="hidden md:block absolute top-1/2 right-0 transform translate-x-1/2 -translate-y-1/2 z-20">
-                    <ArrowRight className="text-primary/40 w-6 h-6" />
-                  </div>
-                )}
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-      
-      {/* Case Studies */}
-      <section className="py-20 md:py-32 bg-darker relative overflow-hidden">
-        <div className="container mx-auto px-4 md:px-8 relative z-10">
-          <motion.div 
-            className="mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-3xl md:text-5xl font-poppins font-bold mb-6">DevOps Case Studies</h2>
-            <p className="text-xl text-white/70 max-w-3xl">
-              Real-world examples of how our DevOps services have transformed businesses.
-            </p>
-          </motion.div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {caseStudies.map((study, index) => (
-              <motion.div
-                key={study.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                className="rounded-2xl overflow-hidden group"
-              >
-                <div className="h-64 overflow-hidden">
-                  <img 
-                    src={study.image} 
-                    alt={study.title} 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                </div>
-                <div className="p-8 border border-white/10 border-t-0 rounded-b-2xl bg-dark/90">
-                  <h3 className="text-2xl font-poppins font-bold mb-4">{study.title}</h3>
-                  <p className="text-white/70 mb-6">{study.description}</p>
-                  
-                  <div className="grid grid-cols-3 gap-4 mb-6">
-                    {study.metrics.map((metric, i) => (
-                      <div key={i} className="text-center p-3 bg-primary/5 rounded-lg">
-                        <div className="text-2xl font-poppins font-bold text-primary mb-1">{metric.value}</div>
-                        <div className="text-sm text-white/60">{metric.label}</div>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <motion.a 
-                    href="#" 
-                    className="inline-flex items-center text-primary font-medium"
-                    whileHover={{ x: 5 }}
-                  >
-                    Read case study <ArrowRight className="ml-2 h-4 w-4" />
-                  </motion.a>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-      
-      {/* Technologies */}
-      <section className="py-20 md:py-32 bg-dark relative overflow-hidden">
-        <motion.div 
-          className="absolute w-96 h-96 rounded-full bg-primary/5 blur-3xl -top-48 -right-48"
-          animate={{ 
-            y: [0, 50, 0],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{ 
-            duration: 15, 
-            repeat: Infinity,
-            repeatType: "reverse" 
-          }}
-        />
+      <section className="py-20 md:py-32 bg-darker relative">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent opacity-50" />
         
         <div className="container mx-auto px-4 md:px-8 relative z-10">
-          <motion.div 
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-3xl mx-auto text-center mb-16"
           >
-            <h2 className="text-3xl md:text-5xl font-poppins font-bold mb-6">Our DevOps Technology Stack</h2>
-            <p className="text-xl text-white/70 max-w-3xl mx-auto">
-              We leverage industry-leading technologies to deliver exceptional DevOps solutions.
+            <h2 className="text-3xl md:text-5xl font-bold mb-6">Our DevOps Process</h2>
+            <p className="text-lg text-white/70">
+              We follow a proven methodology to implement DevOps practices that drive meaningful results for your organization.
             </p>
           </motion.div>
           
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center"
+            className="space-y-6 relative"
           >
-            {[
-              { name: "AWS", icon: "https://cdn.worldvectorlogo.com/logos/aws-2.svg" },
-              { name: "Docker", icon: "https://cdn.worldvectorlogo.com/logos/docker-4.svg" },
-              { name: "Kubernetes", icon: "https://cdn.worldvectorlogo.com/logos/kubernets.svg" },
-              { name: "Jenkins", icon: "https://cdn.worldvectorlogo.com/logos/jenkins-1.svg" },
-              { name: "GitLab", icon: "https://cdn.worldvectorlogo.com/logos/gitlab.svg" },
-              { name: "Terraform", icon: "https://cdn.worldvectorlogo.com/logos/terraform-enterprise.svg" },
-              { name: "Ansible", icon: "https://cdn.worldvectorlogo.com/logos/ansible.svg" },
-              { name: "Prometheus", icon: "https://cdn.worldvectorlogo.com/logos/prometheus.svg" }
-            ].map((tech, index) => (
+            {/* Line connecting steps */}
+            <div className="absolute top-0 bottom-0 left-[28px] w-1 bg-gradient-to-b from-primary/80 via-primary/50 to-primary/10 hidden md:block"></div>
+            
+            {steps.map((step, index) => (
               <motion.div
-                key={tech.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                whileHover={{ y: -5 }}
-                className="p-6 bg-dark/50 border border-white/10 rounded-xl flex flex-col items-center"
+                key={index}
+                variants={itemVariants}
+                className="flex flex-col md:flex-row gap-6 md:gap-8"
               >
-                <div className="w-16 h-16 mb-4 bg-white rounded-lg p-2 flex items-center justify-center">
-                  <img src={tech.icon} alt={tech.name} className="w-10 h-10 object-contain" />
+                <div className="flex-shrink-0 flex items-start relative z-10">
+                  <div className="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold border border-primary/30">
+                    {step.number}
+                  </div>
                 </div>
-                <span className="font-medium">{tech.name}</span>
+                <div className="bg-dark/50 p-6 md:p-8 rounded-2xl border border-white/5 flex-1">
+                  <h3 className="text-xl font-bold mb-2">{step.title}</h3>
+                  <p className="text-white/70">{step.description}</p>
+                </div>
               </motion.div>
             ))}
           </motion.div>
         </div>
       </section>
       
-      {/* CTA Section */}
-      <section className="py-20 md:py-32 bg-primary/10 relative overflow-hidden">
+      {/* Case Studies Section */}
+      <section className="py-20 md:py-32 bg-dark">
+        <div className="container mx-auto px-4 md:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-5xl font-bold mb-6">Success Stories</h2>
+            <p className="text-lg text-white/70 max-w-3xl mx-auto">
+              Learn how our DevOps services have transformed operations and accelerated growth for our clients.
+            </p>
+          </motion.div>
+          
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8"
+          >
+            {projects.map((project, index) => (
+              <motion.div
+                key={index}
+                variants={itemVariants}
+                className="bg-darker rounded-2xl overflow-hidden border border-white/5 hover:border-primary/20 transition-all duration-300"
+              >
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold mb-3">{project.title}</h3>
+                  <p className="text-white/70 mb-6">{project.description}</p>
+                  <div className="grid grid-cols-3 gap-2">
+                    {project.metrics.map((metric, i) => (
+                      <div key={i} className="text-center">
+                        <div className="text-xl font-bold text-primary">{metric.value}</div>
+                        <div className="text-xs text-white/50">{metric.label}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+      
+      {/* Benefits Section */}
+      <section className="py-20 md:py-32 bg-darker relative">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent opacity-40" />
+        
         <div className="container mx-auto px-4 md:px-8 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+          <div className="flex flex-col lg:flex-row gap-12 md:gap-20 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-3xl md:text-5xl font-poppins font-bold mb-6"
+              transition={{ duration: 0.8 }}
+              className="lg:w-1/2"
             >
-              Ready to Transform Your Development Process?
-            </motion.h2>
-            
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-xl text-white/70 mb-10"
-            >
-              Get started with our DevOps services today and experience faster, more reliable software delivery.
-            </motion.p>
+              <h2 className="text-3xl md:text-5xl font-bold mb-6">Benefits of Our DevOps Services</h2>
+              <p className="text-lg text-white/70 mb-8">
+                Our DevOps solutions deliver tangible business value through improved collaboration, automation, and continuous delivery practices.
+              </p>
+              
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="grid grid-cols-1 md:grid-cols-2 gap-4"
+              >
+                {benefits.map((benefit, index) => (
+                  <motion.div
+                    key={index}
+                    variants={itemVariants}
+                    className="flex items-start gap-3"
+                  >
+                    <CheckCircle className="w-5 h-5 mt-0.5 text-primary flex-shrink-0" />
+                    <span className="text-white/80">{benefit}</span>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </motion.div>
             
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={{ duration: 0.8 }}
+              className="lg:w-1/2 relative"
             >
-              <a href="#contact" className="magnetic-btn bg-primary hover:bg-opacity-90 text-white font-medium py-4 px-8 rounded-full inline-flex items-center transition-all">
-                Get in Touch <ArrowRight className="ml-2 h-5 w-5" />
-              </a>
+              <div className="absolute inset-0 bg-gradient-to-tr from-primary/30 via-primary/10 to-transparent rounded-3xl blur-2xl" />
+              <div className="relative">
+                <div className="p-1 rounded-3xl bg-gradient-to-tr from-primary/50 via-primary/20 to-transparent">
+                  <div className="rounded-3xl overflow-hidden">
+                    <img
+                      src="https://images.unsplash.com/photo-1580894742597-87bc8789db3d?auto=format&fit=crop&q=80"
+                      alt="DevOps Benefits"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>
-        
-        {/* Background patterns */}
-        <svg className="absolute bottom-0 left-0 w-full h-auto opacity-10" viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">
-          <path fill="#FF6F61" fillOpacity="1" d="M0,160L48,170.7C96,181,192,203,288,208C384,213,480,203,576,186.7C672,171,768,149,864,154.7C960,160,1056,192,1152,192C1248,192,1344,160,1392,144L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-        </svg>
       </section>
-    </motion.main>
+      
+      {/* CTA Section */}
+      <section id="contact" className="py-20 md:py-32 bg-dark">
+        <div className="container mx-auto px-4 md:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl mx-auto text-center"
+          >
+            <h2 className="text-3xl md:text-5xl font-bold mb-6">Ready to Transform Your DevOps Process?</h2>
+            <p className="text-lg text-white/70 mb-10 max-w-2xl mx-auto">
+              Contact us today to learn how our DevOps services can help your organization deliver better software faster and more reliably.
+            </p>
+            <a 
+              href="/contact" 
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary hover:bg-primary/90 text-white rounded-lg transition-colors duration-300 text-lg"
+            >
+              Get in Touch
+              <ArrowRight className="w-5 h-5" />
+            </a>
+          </motion.div>
+        </div>
+      </section>
+    </motion.div>
   );
 };
 

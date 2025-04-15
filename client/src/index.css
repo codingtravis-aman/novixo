@@ -85,3 +85,39 @@
 .service-item {
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
+
+/* Custom Cursor Styles */
+html, body {
+  @apply cursor-none;
+}
+
+@media (max-width: 768px) {
+  html, body {
+    @apply cursor-auto;
+  }
+}
+
+.cursor-container {
+  pointer-events: none;
+}
+
+.expanded {
+  width: 30px !important;
+  height: 30px !important;
+  transform: translate(-50%, -50%) scale(1.2);
+}
+
+[data-cursor="pointer"] {
+  cursor: none;
+}
+
+/* Hide default cursor on interactive elements */
+a, button, input, textarea, select, [data-cursor="pointer"] {
+  @apply cursor-none;
+}
+
+@media (max-width: 768px) {
+  a, button, input, textarea, select, [data-cursor="pointer"] {
+    @apply cursor-pointer;
+  }
+}

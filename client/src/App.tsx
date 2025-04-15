@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
-import { Route, Switch, useLocation } from "wouter";
+import { useEffect, useState } from "react";
+import { Route, Switch } from "wouter";
 import { Toaster } from "@/components/ui/toaster";
-import NotFound from "@/pages/not-found";
+
 import Home from "@/pages/Home";
+import NotFound from "@/pages/NotFound";
 import DevOps from "@/pages/DevOps";
 import InfluencerMarketing from "@/pages/InfluencerMarketing";
 import Careers from "@/pages/Careers";
@@ -11,39 +12,41 @@ import WebDevelopment from "@/pages/WebDevelopment";
 import MobileDevelopment from "@/pages/MobileDevelopment";
 import DigitalMarketing from "@/pages/DigitalMarketing";
 import CaseStudies from "@/pages/CaseStudies";
+import About from "@/pages/About";
+import Work from "@/pages/Work";
+import Contact from "@/pages/Contact";
 import Cursor from "@/components/Cursor";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import SplashScreen from "@/components/SplashScreen"; // ✅ IMPORT splash
+import SplashScreen from "@/components/SplashScreen";
 import { motion, AnimatePresence } from "framer-motion";
 
 function Router() {
-  const [isMobile, setIsMobile] = useState(false);
-  const [location] = useLocation();
+  const [location, setLocation] = useState(window.location.pathname);
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+    const handleLocationChange = () => {
+      setLocation(window.location.pathname);
+      window.scrollTo(0, 0);
     };
 
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-
-    return () => window.removeEventListener("resize", checkMobile);
+    window.addEventListener('popstate', handleLocationChange);
+    return () => window.removeEventListener('popstate', handleLocationChange);
   }, []);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location]);
 
   return (
     <>
-      {!isMobile && <Cursor />}
-      <div className="progress-bar" />
+      <div className="hidden md:block">
+        <Cursor />
+      </div>
+      <div className="progress-bar fixed top-0 left-0 h-1 bg-primary z-50" style={{ width: '0%' }} />
       <Navbar />
       <AnimatePresence mode="wait">
         <Switch>
           <Route path="/" component={Home} />
+          <Route path="/work" component={Work} />
+          <Route path="/about" component={About} />
+          <Route path="/contact" component={Contact} />
           <Route path="/devops" component={DevOps} />
           <Route path="/influencer-marketing" component={InfluencerMarketing} />
           <Route path="/careers" component={Careers} />
@@ -61,13 +64,13 @@ function Router() {
   );
 }
 
-function App(): JSX.Element {
+function App() {
   const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, 3000); // match your splash screen timing
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);

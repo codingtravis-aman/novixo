@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'wouter';
+import { X } from 'lucide-react';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -38,12 +39,14 @@ const MobileMenu = ({ isOpen, closeMenu }: MobileMenuProps) => {
     })
   };
 
-  // Home page section links (hash links)
-  const sectionLinks = [
-    { href: "#work", label: "Work" },
-    { href: "#capabilities", label: "Capabilities" },
-    { href: "#about", label: "About" },
-    { href: "#contact", label: "Contact" }
+  // Main navigation links
+  const mainLinks = [
+    { href: "/", label: "Home" },
+    { href: "/work", label: "Work" },
+    { href: "/case-studies", label: "Case Studies" },
+    { href: "/about", label: "About" },
+    { href: "/contact", label: "Contact" },
+    { href: "/careers", label: "Careers" }
   ];
 
   // Service pages
@@ -55,107 +58,94 @@ const MobileMenu = ({ isOpen, closeMenu }: MobileMenuProps) => {
     { href: "/mobile-development", label: "Mobile Development" },
     { href: "/digital-marketing", label: "Digital Marketing" }
   ];
-  
-  // Other page links
-  const pageLinks = [
-    { href: "/case-studies", label: "Case Studies" },
-    { href: "/careers", label: "Careers" }
-  ];
 
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 bg-darker z-40"
+          className="fixed inset-0 z-[99]"
+          style={{ pointerEvents: 'auto' }}
+          variants={menuVariants}
           initial="hidden"
           animate="visible"
           exit="hidden"
-          variants={menuVariants}
         >
-          <div className="h-full flex flex-col justify-center items-center">
-            <nav className="flex flex-col space-y-8 text-center">
-              <motion.div
-                variants={menuItemVariants}
-                custom={0}
-                initial="hidden"
-                animate="visible"
-                className="text-2xl text-primary/70 font-medium mb-2"
-              >
-                Home
-              </motion.div>
-              
-              {sectionLinks.map((link, i) => (
-                <motion.a
-                  key={link.href}
-                  href={link.href}
-                  className="text-3xl font-poppins font-bold text-white hover:text-primary transition-colors"
-                  variants={menuItemVariants}
-                  custom={i + 1}
-                  initial="hidden"
-                  animate="visible"
-                  onClick={closeMenu}
-                >
-                  {link.label}
-                </motion.a>
-              ))}
-              
-              <motion.div
-                variants={menuItemVariants}
-                custom={sectionLinks.length + 1}
-                initial="hidden"
-                animate="visible"
-                className="text-2xl text-primary/70 font-medium mt-4 mb-2"
-              >
-                Services
-              </motion.div>
-              
-              {serviceLinks.map((link, i) => (
-                <motion.div
-                  key={link.href}
-                  variants={menuItemVariants}
-                  custom={i + sectionLinks.length + 2}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  <Link 
-                    href={link.href}
-                    className="text-2xl font-poppins font-medium text-white hover:text-primary transition-colors"
-                    onClick={closeMenu}
-                  >
-                    {link.label}
-                  </Link>
-                </motion.div>
-              ))}
-              
-              <motion.div
-                variants={menuItemVariants}
-                custom={sectionLinks.length + serviceLinks.length + 2}
-                initial="hidden"
-                animate="visible"
-                className="text-2xl text-primary/70 font-medium mt-4 mb-2"
-              >
-                Pages
-              </motion.div>
-              
-              {pageLinks.map((link, i) => (
-                <motion.div
-                  key={link.href}
-                  variants={menuItemVariants}
-                  custom={i + sectionLinks.length + serviceLinks.length + 3}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  <Link 
-                    href={link.href}
-                    className="text-2xl font-poppins font-medium text-white hover:text-primary transition-colors"
-                    onClick={closeMenu}
-                  >
-                    {link.label}
-                  </Link>
-                </motion.div>
-              ))}
-            </nav>
-          </div>
+          {/* Backdrop Blur */}
+          <motion.div
+            className="absolute inset-0 bg-black/70 backdrop-blur-md"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            onClick={closeMenu}
+          />
+          {/* Menu Panel */}
+          <motion.div
+            className="relative w-full h-full flex flex-col"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            {/* Close Button */}
+            <button
+              className="absolute top-7 right-6 z-50 bg-white/10 hover:bg-white/20 rounded-full p-2 transition-colors"
+              onClick={closeMenu}
+              aria-label="Close menu"
+            >
+              <X className="w-7 h-7 text-white" />
+            </button>
+            <div className="container mx-auto px-4 py-24 h-full overflow-y-auto">
+              <div className="space-y-12">
+                {/* Main Links */}
+                <div>
+                  <h3 className="text-white/50 text-sm uppercase mb-4">Navigation</h3>
+                  <div className="space-y-4">
+                    {mainLinks.map((link, i) => (
+                      <motion.div
+                        key={link.href}
+                        custom={i}
+                        variants={menuItemVariants}
+                        initial="hidden"
+                        animate="visible"
+                      >
+                        <Link
+                          href={link.href}
+                          className="text-2xl text-white/80 hover:text-primary transition-colors block"
+                          onClick={closeMenu}
+                        >
+                          {link.label}
+                        </Link>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+                {/* Services */}
+                <div>
+                  <h3 className="text-white/50 text-sm uppercase mb-4">Services</h3>
+                  <div className="space-y-4">
+                    {serviceLinks.map((link, i) => (
+                      <motion.div
+                        key={link.href}
+                        custom={i + mainLinks.length}
+                        variants={menuItemVariants}
+                        initial="hidden"
+                        animate="visible"
+                      >
+                        <Link
+                          href={link.href}
+                          className="text-xl text-white/80 hover:text-primary transition-colors block"
+                          onClick={closeMenu}
+                        >
+                          {link.label}
+                        </Link>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>

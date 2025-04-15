@@ -9,8 +9,6 @@ import Contact from '@/sections/Contact';
 import DesignShowcase from '@/sections/DesignShowcase';
 import DesignExpertise from '@/sections/DesignExpertise';
 import Clients from '@/sections/Clients';
-import Technologies from '@/sections/Technologies';
-import SplashScreen from '@/components/SplashScreen';
 
 const Home = () => {
   // Handle scroll progress bar
@@ -59,27 +57,23 @@ const Home = () => {
   }, []);
 
   return (
-    <>
-      <SplashScreen />
-      <motion.main
-        className="bg-dark text-white font-inter" 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <Hero />
-        <Work />
-        <DesignShowcase />
-        <Capabilities />
-        <DesignExpertise />
-        <Clients />
-        <Technologies />
-        <About />
-        <Insights />
-        <Contact />
-      </motion.main>
-    </>
+    <motion.main
+      className="bg-dark text-white font-inter" 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Hero />
+      <Work />
+      <DesignShowcase />
+      <Capabilities />
+      <DesignExpertise />
+      <Clients />
+      <About />
+      <Insights />
+      <Contact />
+    </motion.main>
   );
 };
 
