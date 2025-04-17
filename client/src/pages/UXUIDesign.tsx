@@ -10,41 +10,48 @@ import {
   ArrowRight, 
   Layout, 
   MousePointer, 
-  Smartphone 
+  Smartphone,
+  Palette,
+  Code,
+  Zap
 } from 'lucide-react';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5 }
+  }
+};
 
 const UXUIDesign = () => {
   // Service features
   const designServices = [
     {
-      icon: <Layout className="w-6 h-6 text-primary" />,
-      title: "UI Design",
-      description: "We create beautiful, intuitive interfaces that elevate your digital product and reflect your brand identity."
+      title: "User Research",
+      description: "Comprehensive research to understand user behaviors, needs and motivations.",
+      icon: <Users className="h-6 w-6" />
     },
     {
-      icon: <Users className="w-6 h-6 text-primary" />,
-      title: "UX Research",
-      description: "Our user-centered approach ensures that your product meets real user needs through thorough research and testing."
+      title: "Interface Design",
+      description: "Beautiful, intuitive interfaces that delight users and drive engagement.",
+      icon: <Layout className="h-6 w-6" />
     },
     {
-      icon: <MousePointer className="w-6 h-6 text-primary" />,
-      title: "Interaction Design",
-      description: "We craft meaningful interactions that guide users through your product with clarity and purpose."
-    },
-    {
-      icon: <Smartphone className="w-6 h-6 text-primary" />,
-      title: "Responsive Design",
-      description: "Every interface we design works flawlessly across all devices, from desktop to mobile."
-    },
-    {
-      icon: <Lightbulb className="w-6 h-6 text-primary" />,
-      title: "Design Systems",
-      description: "We create scalable design systems that ensure consistency and efficiency across your digital products."
-    },
-    {
-      icon: <LineChart className="w-6 h-6 text-primary" />,
-      title: "UX Optimization",
-      description: "We analyze user behavior and implement data-driven improvements to enhance your product's performance."
+      title: "Prototyping",
+      description: "Interactive prototypes to test concepts before development begins.",
+      icon: <Smartphone className="h-6 w-6" />
     }
   ];
 

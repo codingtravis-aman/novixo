@@ -1,116 +1,104 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Github } from 'lucide-react';
-import { useState } from 'react';
-
-interface Project {
-  title: string;
-  description: string;
-  image: string;
-  category: string;
-  technologies: string[];
-  links: {
-    live?: string;
-    github?: string;
-  };
-}
+import ThreeDScene from '../components/3DScene';
 
 const Work = () => {
-  const [activeCategory, setActiveCategory] = useState("All");
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.25, 0.1, 0.25, 1]
-      }
-    }
-  };
-
-  const categories = ["All", "Web App", "Mobile", "UI/UX", "Branding"];
-  
-  const projects: Project[] = [
+  // Enhanced projects data with images and links
+  const projects = [
     {
-      title: "E-Commerce Platform",
-      description: "A modern e-commerce platform with real-time inventory management and AI-powered recommendations.",
-      image: "https://images.unsplash.com/photo-1661956602116-aa6865609028?auto=format&fit=crop&q=80&w=800",
-      category: "Web App",
-      technologies: ["React", "Node.js", "MongoDB", "TailwindCSS"],
-      links: {
-        live: "https://example.com",
-        github: "https://github.com"
-      }
+      title: "E-commerce Platform",
+      category: "Web Development",
+      description: "Built with React, Node.js and MongoDB handling 10K+ daily transactions",
+      image: "/work/ecommerce.jpg",
+      tags: ["React", "Node.js", "MongoDB"],
+      link: "/work/ecommerce-case-study"
     },
     {
-      title: "Travel App Design",
-      description: "Beautiful and intuitive travel planning app design with interactive maps and itinerary builder.",
-      image: "https://images.unsplash.com/photo-1680795456548-d5e58e33bba2?auto=format&fit=crop&q=80&w=800",
-      category: "UI/UX",
-      technologies: ["Figma", "Adobe XD", "Prototyping"],
-      links: {
-        live: "https://example.com"
-      }
+      title: "Mobile Banking App", 
+      category: "Mobile Development",
+      description: "Secure banking application with biometric authentication",
+      image: "/work/banking.jpg",
+      tags: ["React Native", "Firebase", "Stripe"],
+      link: "/work/banking-case-study"
     },
     {
-      title: "Fitness Tracking App",
-      description: "Cross-platform mobile app for tracking workouts, nutrition, and health metrics with social features.",
-      image: "https://images.unsplash.com/photo-1676321685222-0b527e69c022?auto=format&fit=crop&q=80&w=800",
-      category: "Mobile",
-      technologies: ["React Native", "Firebase", "TypeScript"],
-      links: {
-        live: "https://example.com",
-        github: "https://github.com"
-      }
+      title: "Cloud Infrastructure",
+      category: "DevOps",
+      description: "Scalable cloud architecture with auto-scaling",
+      image: "/work/cloud.jpg", 
+      tags: ["AWS", "Terraform", "Kubernetes"],
+      link: "/work/cloud-case-study"
     },
     {
-      title: "Brand Identity System",
-      description: "Complete brand identity system including logo, guidelines, and marketing materials.",
-      image: "https://images.unsplash.com/photo-1679678691006-0ad24fecb769?auto=format&fit=crop&q=80&w=800",
-      category: "Branding",
-      technologies: ["Illustrator", "Photoshop", "InDesign"],
-      links: {
-        live: "https://example.com"
-      }
-    },
-    {
-      title: "Analytics Dashboard",
-      description: "Real-time analytics dashboard with customizable widgets and data visualization.",
-      image: "https://images.unsplash.com/photo-1678698399012-47672f315b54?auto=format&fit=crop&q=80&w=800",
-      category: "Web App",
-      technologies: ["Vue.js", "D3.js", "PostgreSQL"],
-      links: {
-        live: "https://example.com",
-        github: "https://github.com"
-      }
-    },
-    {
-      title: "Social Media App",
-      description: "Feature-rich social media application with real-time messaging and content sharing.",
-      image: "https://images.unsplash.com/photo-1673845946960-0aa133650662?auto=format&fit=crop&q=80&w=800",
-      category: "Mobile",
-      technologies: ["Flutter", "Firebase", "GetX"],
-      links: {
-        live: "https://example.com",
-        github: "https://github.com"
-      }
+      title: "Data Analytics Dashboard",
+      category: "Data Engineering",
+      description: "Real-time business intelligence dashboard",
+      image: "/work/analytics.jpg",
+      tags: ["Python", "PostgreSQL", "D3.js"],
+      link: "/work/analytics-case-study"
     }
   ];
 
-  const filteredProjects = projects.filter(project => 
-    activeCategory === "All" ? true : project.category === activeCategory
-  );
+  // Animated counter component
+  const StatsCounter = ({ value, label }: { value: string; label: string }) => {
+    const [count, setCount] = useState(0);
+    
+    useEffect(() => {
+      const target = parseInt(value.replace(/[^0-9]/g, ''));
+      const duration = 2000;
+      const increment = target / (duration / 16);
+      
+      const timer = setInterval(() => {
+        setCount(prev => {
+          if (prev >= target) {
+            clearInterval(timer);
+            return target;
+          }
+          return Math.ceil(prev + increment);
+        });
+      }, 16);
+
+      return () => clearInterval(timer);
+    }, [value]);
+
+    return (
+      <div className="text-center">
+        <div className="text-5xl font-bold text-primary mb-3">
+          {count}{value.includes('+') ? '+' : ''}
+        </div>
+        <p className="text-xl text-white/70">{label}</p>
+      </div>
+    );
+  };
+
+  // Testimonials data
+  const testimonials = [
+    {
+      quote: "Their solution increased our conversion rate by 40%",
+      author: "Jane Smith, CEO of RetailCo",
+      role: "E-commerce Client" 
+    },
+    {
+      quote: "The most reliable tech partner we've worked with",
+      author: "Michael Johnson, CTO of FinTech Inc",
+      role: "Banking Client"
+    },
+    {
+      quote: "Transformed our data infrastructure in record time",
+      author: "Sarah Lee, Data Director",
+      role: "Enterprise Client"
+    }
+  ];
+
+  // Technologies data
+  const technologies = [
+    { name: "React", icon: "/tech/react.svg" },
+    { name: "Node.js", icon: "/tech/nodejs.svg" },
+    { name: "MongoDB", icon: "/tech/mongodb.svg" },
+    { name: "AWS", icon: "/tech/aws.svg" },
+    { name: "Python", icon: "/tech/python.svg" },
+    { name: "Kubernetes", icon: "/tech/kubernetes.svg" }
+  ];
 
   return (
     <motion.main
@@ -121,28 +109,11 @@ const Work = () => {
       transition={{ duration: 0.5 }}
     >
       {/* Hero Section */}
-      <section className="relative min-h-[60vh] flex items-center overflow-hidden">
-        {/* Decorative Floating Shapes */}
-        <motion.div 
-          className="absolute right-10 md:right-20 top-1/3 transform -translate-y-1/2"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-        >
-          <div className="relative">
-            <motion.div 
-              className="absolute inset-0 bg-primary/10 rounded-2xl blur-md"
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 3, repeat: Infinity }}
-            />
-            <div className="w-20 h-20 md:w-32 md:h-32 bg-dark/80 backdrop-blur-sm rounded-2xl border border-white/10 flex items-center justify-center relative z-10">
-              <Github className="w-10 h-10 md:w-16 md:h-16 text-primary" />
-            </div>
-          </div>
-        </motion.div>
-        <div className="container mx-auto px-4 md:px-8 py-20 relative z-10">
+      <section className="relative min-h-screen flex items-center overflow-hidden">
+        <ThreeDScene />
+        <div className="container mx-auto px-4 md:px-8 py-32 relative z-10">
           <div className="max-w-3xl">
-            <motion.h1 
+            <motion.h1
               className="text-4xl md:text-6xl font-poppins font-bold mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -150,114 +121,120 @@ const Work = () => {
             >
               Our <span className="text-primary">Work</span>
             </motion.h1>
-            <motion.p 
+            <motion.p
               className="text-xl md:text-2xl text-white/70 mb-12"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              Explore our latest projects and see how we help businesses transform their digital presence.
+              Discover how we've helped businesses transform through technology.
             </motion.p>
           </div>
         </div>
       </section>
+
       {/* Projects Section */}
-      <section className="py-20 md:py-32 bg-darker relative overflow-hidden">
-        <div className="container mx-auto px-4 md:px-8 relative z-10">
-          <motion.div 
-            className="text-center mb-16"
+      <section className="py-20 md:py-32 bg-darker relative">
+        <div className="container mx-auto px-4 md:px-8">
+          <motion.div
+            className="max-w-3xl mx-auto text-center mb-16"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl md:text-5xl font-poppins font-bold mb-6">Projects</h2>
-            <p className="text-xl text-white/70 max-w-3xl mx-auto">
-              From web apps to UI/UX design, here are some highlights from our portfolio.
+            <h2 className="text-3xl md:text-5xl font-poppins font-bold mb-6">Featured Projects</h2>
+            <p className="text-xl text-white/70">
+              A selection of our most impactful work
             </p>
           </motion.div>
-          {/* Category Filter */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="flex flex-wrap justify-center gap-4 mb-16"
-          >
-            {categories.map((category, index) => (
-              <motion.button
-                key={index}
-                variants={itemVariants}
-                onClick={() => setActiveCategory(category)}
-                className={`px-6 py-2 rounded-full transition-all duration-300 font-semibold text-base ${activeCategory === category ? "bg-primary text-white border-primary border-2" : "bg-dark border border-white/20 text-white/70 hover:text-primary hover:border-primary"}`}
-              >
-                {category}
-              </motion.button>
-            ))}
-          </motion.div>
-          {/* Projects Grid */}
-          <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {filteredProjects.map((project, index) => (
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {projects.map((project, index) => (
               <motion.div
-                key={index}
-                variants={itemVariants}
-                className="relative p-8 border border-white/10 rounded-2xl bg-dark/50 hover:bg-dark/80 transition-all duration-300 h-full flex flex-col group overflow-hidden"
-                whileHover={{ y: -6, scale: 1.03 }}
+                key={project.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="group overflow-hidden rounded-2xl bg-dark/60 border border-white/10 hover:border-primary/30 transition-all duration-300 shadow-lg backdrop-blur-sm"
               >
-                <div className="aspect-[4/3] overflow-hidden rounded-xl mb-4">
+                <div className="h-48 bg-gradient-to-br from-primary/20 to-dark/80 relative overflow-hidden">
                   <img 
-                    src={project.image} 
+                    src={project.image}
                     alt={project.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-lg font-bold text-primary font-poppins">{project.title}</span>
-                </div>
-                <div className="text-white/70 mb-2">{project.description}</div>
-                <div className="flex flex-wrap gap-2 mb-2">
-                  {project.technologies.map((tech, techIndex) => (
-                    <span 
-                      key={techIndex}
-                      className="text-sm bg-primary/10 text-primary px-3 py-1 rounded-full font-medium"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                <div className="flex gap-3 mt-auto">
-                  {project.links.live && (
+                <div className="p-6">
+                  <div className="flex items-start justify-between gap-4 mb-4">
+                    <div>
+                      <span className="text-primary font-medium">{project.category}</span>
+                      <h3 className="text-2xl font-poppins font-bold">{project.title}</h3>
+                    </div>
                     <a 
-                      href={project.links.live}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-primary hover:underline"
+                      href={project.link}
+                      className="text-primary hover:text-white transition-colors"
+                      aria-label={`View ${project.title} case study`}
                     >
-                      <ExternalLink className="h-4 w-4" /> Live
+                      →
                     </a>
-                  )}
-                  {project.links.github && (
-                    <a 
-                      href={project.links.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-primary hover:underline"
-                    >
-                      <Github className="h-4 w-4" /> Code
-                    </a>
-                  )}
+                  </div>
+                  <p className="text-white/70 mb-6">{project.description}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags.map(tag => (
+                      <span key={tag} className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-20 md:py-32 bg-dark relative">
+        <div className="container mx-auto px-4 md:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <StatsCounter value="150+" label="Projects Completed" />
+            <StatsCounter value="95%" label="Client Satisfaction" />
+            <StatsCounter value="40+" label="Industries Served" />
+            <StatsCounter value="5M+" label="Users Impacted" />
+          </div>
+        </div>
+      </section>
+
+    
+
+      {/* CTA Section */}
+      <section className="py-20 md:py-32 bg-primary/10 relative">
+        <div className="container mx-auto px-4 md:px-8 text-center">
+          <motion.h2
+            className="text-3xl md:text-5xl font-poppins font-bold mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            Ready to Start Your Project?
+          </motion.h2>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <a 
+              href="/contact" 
+              className="inline-block bg-primary hover:bg-opacity-90 text-white font-medium py-4 px-8 rounded-full transition-all"
+            >
+              Get in Touch
+            </a>
           </motion.div>
         </div>
-        {/* Decorative Elements */}
-        <div className="absolute top-1/4 -right-12 w-24 h-24 bg-primary/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 -left-12 w-24 h-24 bg-primary/20 rounded-full blur-3xl animate-pulse delay-1000" />
       </section>
     </motion.main>
   );

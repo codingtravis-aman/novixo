@@ -20,20 +20,21 @@ const Cursor = () => {
   
   useCustomCursor({ cursorRef, followerRef });
 
-  if (isMobile) return null;
+  // Always show cursor for debugging
+  // if (isMobile) return null;
 
   return (
     <>
       {/* Main cursor dot */}
       <div 
         ref={cursorRef} 
-        className="fixed z-[9999] pointer-events-none mix-blend-difference transition-[width,height,background,opacity] duration-150 w-5 h-5 rounded-full bg-primary/80 -translate-x-1/2 -translate-y-1/2"
+        className="fixed z-[9999] pointer-events-none mix-blend-difference transition-[width,height,background,opacity] duration-150 w-5 h-5 rounded-full bg-primary/80 border-4 border-red-500 -translate-x-1/2 -translate-y-1/2"
         style={{ opacity: 1 }}
       />
       {/* Follower ring */}
       <div 
         ref={followerRef} 
-        className="fixed z-[9998] pointer-events-none border-2 border-primary/50 rounded-full transition-[width,height,border,opacity] duration-200 w-10 h-10 -translate-x-1/2 -translate-y-1/2 bg-transparent"
+        className="fixed z-[9998] pointer-events-none border-2 border-primary/50 rounded-full transition-[width,height,border,opacity] duration-200 w-10 h-10 -translate-x-1/2 -translate-y-1/2 bg-transparent border-4 border-blue-500"
         style={{ opacity: 1 }}
       />
     </>

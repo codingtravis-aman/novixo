@@ -1,225 +1,332 @@
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
-import { useState } from 'react';
+import { 
+  Mail, 
+  Phone, 
+  Send, 
+  Linkedin, 
+  Facebook, 
+  Instagram, 
+  Twitter,
+  MessageSquare,
+  Github,
+  Youtube,
+  Loader2, 
+  ChevronDown 
+} from 'lucide-react';
+import { useState, useRef, useMemo } from 'react';
+import { useToast } from '../hooks/use-toast';
+
+interface SocialLink {
+  name: string;
+  icon: React.ComponentType<{ className?: string }>;
+  url: string;
+}
+
+interface FormData {
+  name: string;
+  email: string;
+  service: string;
+  message: string;
+}
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
+  const { toast } = useToast();
+  const formRef = useRef<HTMLFormElement>(null);
+  
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
+    service: '',
     message: ''
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { id, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [id]: value
-    }));
-  };
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Here you would typically send the data to your backend
-    alert('Form submitted successfully! We will get back to you soon.');
-    setFormData({ name: '', email: '', message: '' });
-  };
+  const services = useMemo(() => [
+    'App Development',
+    'Web Development',
+    'Digital Marketing',
+    'Data Analytics',
+    'DevOps',
+    'UI/UX Design',
+    'Cloud Solutions'
+  ], []);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const contactInfo = [
-    {
-      icon: <Mail className="w-5 h-5" />,
-      title: "Email",
-      value: "hello@novixo.com",
-      link: "mailto:hello@novixo.com"
-    },
-    {
-      icon: <Phone className="w-5 h-5" />,
-      title: "Phone",
-      value: "+1 (555) 123-4567",
-      link: "tel:+15551234567"
-    },
-    {
-      icon: <MapPin className="w-5 h-5" />,
-      title: "Location",
-      value: "San Francisco, CA",
-      link: "https://maps.google.com"
-    }
+  const socialLinks: SocialLink[] = [
+    { name: 'LinkedIn', icon: Linkedin, url: '#' },
+    { name: 'Twitter', icon: Twitter, url: '#' },
+    { name: 'Facebook', icon: Facebook, url: '#' },
+    { name: 'Instagram', icon: Instagram, url: '#' },
+    { name: 'WhatsApp', icon: MessageSquare, url: '#' },
+    { name: 'GitHub', icon: Github, url: '#' },
+    { name: 'YouTube', icon: Youtube, url: '#' }
   ];
 
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      setIsSubmitting(true);
+      
+      // Validation
+      if (!formData.name.trim()) {
+        throw new Error('Name is required');
+      }
+      
+      if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+        throw new Error('Please enter a valid email');
+      }
+      
+      if (!formData.service) {
+        throw new Error('Please select a service');
+      }
+
+      console.log('Form submission:', formData);
+      
+      toast({
+        title: 'Success',
+        description: 'Your message has been sent',
+      });
+
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        service: '',
+        message: ''
+      });
+      
+      formRef.current?.reset();
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error instanceof Error 
+          ? error.message 
+          : 'Failed to send message',
+        variant: 'destructive'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <section id="contact" className="relative py-16 sm:py-24 md:py-32 bg-darker overflow-hidden">
-      {/* Background Animation */}
-      <motion.div 
-        className="absolute inset-0 opacity-30"
-        initial={{ backgroundPosition: '0% 0%' }}
-        animate={{ 
-          backgroundPosition: ['0% 0%', '100% 100%'],
-        }}
-        transition={{
-          duration: 20,
-          ease: "linear",
-          repeat: Infinity,
-          repeatType: "reverse"
-        }}
-        style={{
-          background: 'radial-gradient(circle at center, rgba(255,111,97,0.1) 0%, transparent 50%)',
-          backgroundSize: '100% 100%',
-        }}
-      />
-
+    <section 
+      id="contact" 
+      className="py-20 md:py-32 bg-darker"
+    >
       <div className="container mx-auto px-4 md:px-8">
+        {/* Header */}
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mb-16 text-center"
         >
-          {/* Left Column - Contact Form */}
-          <motion.div variants={itemVariants}>
-            <motion.span 
-              className="inline-block text-primary font-medium mb-4"
-              variants={itemVariants}
-            >
-              Get in Touch
-            </motion.span>
-            <motion.h2 
-              className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6"
-              variants={itemVariants}
-            >
-              Let's Create Something <span className="text-primary">Amazing</span>
-            </motion.h2>
-            <motion.p 
-              className="text-white/70 text-base sm:text-lg mb-8"
-              variants={itemVariants}
-            >
-              Have a project in mind? We'd love to hear about it. Tell us what you're looking for and we'll get back to you.
-            </motion.p>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">
+            Get In Touch
+          </h2>
+          <p className="text-xl text-white/70 max-w-2xl mx-auto">
+            Have a project in mind? We'd love to hear from you.
+          </p>
+        </motion.div>
 
-            <motion.form 
-              variants={containerVariants}
-              className="space-y-6"
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Form */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="bg-dark/50 border border-white/10 rounded-2xl p-8"
+          >
+            <form 
+              ref={formRef}
               onSubmit={handleSubmit}
+              className="space-y-6"
             >
-              <motion.div variants={itemVariants}>
-                <label htmlFor="name" className="block text-sm font-medium mb-2">Name</label>
+              <div>
+                <label 
+                  htmlFor="name"
+                  className="block text-sm font-medium mb-2"
+                >
+                  Full Name <span className="text-primary">*</span>
+                </label>
                 <input
-                  type="text"
                   id="name"
+                  name="name"
+                  type="text"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-lg bg-dark border border-white/10 focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-colors"
-                  placeholder="Your name"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white 
+                    placeholder-white/40 focus:outline-none focus:ring-2 
+                    focus:ring-primary focus:border-transparent"
                   required
                 />
-              </motion.div>
+              </div>
 
-              <motion.div variants={itemVariants}>
-                <label htmlFor="email" className="block text-sm font-medium mb-2">Email</label>
+              <div>
+                <label 
+                  htmlFor="email"
+                  className="block text-sm font-medium mb-2"
+                >
+                  Email <span className="text-primary">*</span>
+                </label>
                 <input
-                  type="email"
                   id="email"
+                  name="email"
+                  type="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-lg bg-dark border border-white/10 focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-colors"
-                  placeholder="your@email.com"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white 
+                    placeholder-white/40 focus:outline-none focus:ring-2 
+                    focus:ring-primary focus:border-transparent"
                   required
                 />
-              </motion.div>
+              </div>
 
-              <motion.div variants={itemVariants}>
-                <label htmlFor="message" className="block text-sm font-medium mb-2">Message</label>
+              <div>
+                <label 
+                  htmlFor="service"
+                  className="block text-sm font-medium mb-2"
+                >
+                  Service <span className="text-primary">*</span>
+                </label>
+                <select
+                  id="service"
+                  name="service"
+                  value={formData.service}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white 
+                    placeholder-white/40 focus:outline-none focus:ring-2 
+                    focus:ring-primary focus:border-transparent"
+                  required
+                >
+                  <option value="">Select a service</option>
+                  {services.map(service => (
+                    <option key={service} value={service}>
+                      {service}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label 
+                  htmlFor="message"
+                  className="block text-sm font-medium mb-2"
+                >
+                  Message
+                </label>
                 <textarea
                   id="message"
+                  name="message"
+                  rows={4}
                   value={formData.message}
                   onChange={handleChange}
-                  rows={4}
-                  className="w-full px-4 py-3 rounded-lg bg-dark border border-white/10 focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-colors resize-none"
-                  placeholder="Tell us about your project..."
-                  required
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white 
+                    placeholder-white/40 focus:outline-none focus:ring-2 
+                    focus:ring-primary focus:border-transparent"
                 />
-              </motion.div>
+              </div>
 
-              <motion.button
+              <button
                 type="submit"
-                variants={itemVariants}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full sm:w-auto px-8 py-4 bg-primary hover:bg-primary/90 text-white font-medium rounded-full inline-flex items-center justify-center transition-colors"
+                disabled={isSubmitting}
+                className="w-full py-4 px-6 bg-primary hover:bg-primary/90 text-white 
+                  font-medium rounded-lg transition-colors disabled:opacity-70 
+                  disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                Send Message
-                <Send className="w-4 h-4 ml-2" />
-              </motion.button>
-            </motion.form>
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-5 h-5" />
+                    Send Message
+                  </>
+                )}
+              </button>
+            </form>
           </motion.div>
 
-          {/* Right Column - Contact Info */}
-          <motion.div 
-            variants={containerVariants}
-            className="lg:pl-8"
+          {/* Contact Info */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="space-y-6"
           >
-            <motion.div 
-              className="grid gap-8"
-              variants={containerVariants}
-            >
-              {contactInfo.map((info, index) => (
-                <motion.a
-                  key={index}
-                  href={info.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variants={itemVariants}
-                  whileHover={{ scale: 1.02 }}
-                  className="p-6 rounded-xl bg-dark border border-white/10 hover:border-primary/50 transition-colors"
-                >
-                  <div className="flex items-center">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                      {info.icon}
-                    </div>
-                    <div className="ml-4">
-                      <h3 className="text-sm font-medium text-white/70">{info.title}</h3>
-                      <p className="text-base sm:text-lg font-medium">{info.value}</p>
-                    </div>
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
+              <h3 className="text-2xl font-bold text-white mb-6">
+                Contact Information
+              </h3>
+              
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <Mail className="w-6 h-6 text-primary mt-1" />
+                  <div>
+                    <h4 className="text-lg font-semibold mb-1">Email</h4>
+                    <p className="text-white/70 mb-3">contact@novixo.com</p>
+                    <a 
+                      href="mailto:contact@novixo.com"
+                      className="text-primary hover:underline"
+                    >
+                      Send us an email
+                    </a>
                   </div>
-                </motion.a>
-              ))}
-            </motion.div>
+                </div>
 
-            {/* Map or Image */}
-            <motion.div 
-              variants={itemVariants}
-              className="mt-8 rounded-xl overflow-hidden"
-            >
-              <img 
-                src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80" 
-                alt="Office location" 
-                className="w-full h-64 object-cover"
-              />
-            </motion.div>
+                <div className="flex items-start gap-4">
+                  <Phone className="w-6 h-6 text-primary mt-1" />
+                  <div>
+                    <h4 className="text-lg font-semibold mb-1">Phone</h4>
+                    <p className="text-white/70 mb-3">+91 98765 43210</p>
+                    <a 
+                      href="tel:+919876543210"
+                      className="text-primary hover:underline"
+                    >
+                      Call now
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
+              <h3 className="text-2xl font-bold text-white mb-6">
+                Connect With Us
+              </h3>
+              <div className="flex flex-wrap gap-3">
+                {socialLinks.map(({ name, icon: Icon, url }) => (
+                  <a
+                    key={name}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 flex items-center justify-center bg-white/5 
+                      border border-white/10 rounded-lg hover:bg-primary/10 
+                      transition-colors"
+                    aria-label={name}
+                  >
+                    <Icon className="w-5 h-5" />
+                  </a>
+                ))}
+              </div>
+            </div>
           </motion.div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
