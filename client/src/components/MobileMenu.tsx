@@ -55,6 +55,8 @@ const MobileMenu = ({ isOpen, closeMenu }: MobileMenuProps) => {
     { href: "/influencer-marketing", label: "Influencer Marketing" },
     { href: "/ux-ui-design", label: "UX/UI Design" },
     { href: "/web-development", label: "Web Development" },
+    { href: "/data-analysis", label: "Data Analysis" },
+    { href: "/cyber-security", label: "Cyber Security" },
     { href: "/mobile-development", label: "Mobile Development" },
     { href: "/digital-marketing", label: "Digital Marketing" }
   ];

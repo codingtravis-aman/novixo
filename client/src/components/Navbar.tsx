@@ -55,6 +55,8 @@ const Navbar = () => {
                 <Link href="/influencer-marketing" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">Influencer Marketing</Link>
                 <Link href="/ux-ui-design" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">UX/UI Design</Link>
                 <Link href="/web-development" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">Web Development</Link>
+                <Link href="/data-analysis" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">Data Analysis</Link>
+                <Link href="/cyber-security" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">Cyber Security</Link>
                 <Link href="/mobile-development" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">Mobile Development</Link>
                 <Link href="/digital-marketing" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">Digital Marketing</Link>
               </div>
@@ -65,6 +67,8 @@ const Navbar = () => {
           <Link href="/about" className="text-white/80 hover:text-primary transition-colors">About</Link>
           <Link href="/contact" className="text-white/80 hover:text-primary transition-colors">Contact</Link>
           <Link href="/careers" className="text-white/80 hover:text-primary transition-colors">Careers</Link>
+          <Link href="/insights" className="text-white/80 hover:text-primary transition-colors">Insights</Link>
+          
         </nav>
         
         {/* Mobile Menu Toggle */}

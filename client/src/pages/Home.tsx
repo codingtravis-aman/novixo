@@ -10,6 +10,7 @@ import DesignShowcase from '@/sections/DesignShowcase';
 import DesignExpertise from '@/sections/DesignExpertise';
 import Clients from '@/sections/Clients';
 
+
 const Home = () => {
   // Handle scroll progress bar
   useEffect(() => {

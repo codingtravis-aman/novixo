@@ -76,7 +76,7 @@ const Insights = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
         >
           <a 
-            href="#" 
+            href="/Insights" 
             className="inline-block magnetic-btn border-2 border-white hover:border-primary hover:bg-primary/10 text-white font-medium py-4 px-8 rounded-full transition-all"
           >
             View all insights

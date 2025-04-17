@@ -48,6 +48,7 @@ const Contact = () => {
     'Digital Marketing',
     'Data Analytics',
     'DevOps',
+    'Cyber Security',
     'UI/UX Design',
     'Cloud Solutions'
   ], []);

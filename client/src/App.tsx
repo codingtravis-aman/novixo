@@ -2,19 +2,22 @@ import { useEffect, useState } from "react";
 import { Route, Switch } from "wouter";
 import { Toaster } from "@/components/ui/toaster";
 
-import Home from "@/pages/Home";
-import NotFound from "@/pages/NotFound";
-import DevOps from "@/pages/DevOps";
-import InfluencerMarketing from "@/pages/InfluencerMarketing";
-import Careers from "@/pages/Careers";
-import UXUIDesign from "@/pages/UXUIDesign";
-import WebDevelopment from "@/pages/WebDevelopment";
-import MobileDevelopment from "@/pages/MobileDevelopment";
-import DigitalMarketing from "@/pages/DigitalMarketing";
-import CaseStudies from "@/pages/CaseStudies";
-import About from "@/pages/About";
-import Work from "@/pages/Work";
-import Contact from "@/pages/Contact";
+import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
+import DevOps from "./pages/DevOps";
+import InfluencerMarketing from "./pages/InfluencerMarketing";
+import Careers from "./pages/Careers";
+import UXUIDesign from "./pages/UXUIDesign";
+import WebDevelopment from "./pages/WebDevelopment";
+import DataAnalysis from "./pages/DataAnalysis";
+import CyberSecurity from "./pages/CyberSecurity";
+import MobileDevelopment from "./pages/MobileDevelopment";
+import DigitalMarketing from "./pages/DigitalMarketing";
+import CaseStudies from "./pages/CaseStudies";
+import About from "./pages/About";
+import Work from "./pages/Work";
+import Contact from "./pages/Contact";
+import Insights from "./pages/Insights";
 import Cursor from "@/components/Cursor";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -52,9 +55,12 @@ function Router() {
           <Route path="/careers" component={Careers} />
           <Route path="/ux-ui-design" component={UXUIDesign} />
           <Route path="/web-development" component={WebDevelopment} />
+      <Route path="/data-analysis" component={DataAnalysis} />
+      <Route path="/cyber-security" component={CyberSecurity} />
           <Route path="/mobile-development" component={MobileDevelopment} />
           <Route path="/digital-marketing" component={DigitalMarketing} />
           <Route path="/case-studies" component={CaseStudies} />
+          <Route path="/insights" component={Insights} />
           <Route component={NotFound} />
         </Switch>
       </AnimatePresence>
