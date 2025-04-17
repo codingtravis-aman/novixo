@@ -77,7 +77,7 @@ const DesignShowcase = () => {
                   <p className="text-white/70 max-w-2xl">Creating digital products that merge functionality with delight, driving engagement through intuitive design and seamless interactions.</p>
                 </div>
                 <motion.a
-                  href="#work"
+                  href="/work"
                   whileHover={{ x: 5, y: -5 }}
                   className="flex items-center gap-2 text-primary font-medium border border-primary/30 hover:border-primary bg-primary/5 hover:bg-primary/10 rounded-full px-6 py-3 transition-all duration-300"
                 >
