@@ -9,16 +9,16 @@ const Clients = () => {
   ];
 
   const clients = [
-    { name: "Google", sector: "Tech" },
-    { name: "Amazon", sector: "E-commerce" },
-    { name: "Microsoft", sector: "Software" },
-    { name: "Tesla", sector: "Automotive" },
-    { name: "Netflix", sector: "Entertainment" },
-    { name: "Adobe", sector: "Creative" }
+    { name: "Google", sector: "Tech", logo: "https://logo.clearbit.com/google.com?size=128" },
+    { name: "Amazon", sector: "E-commerce", logo: "https://logo.clearbit.com/amazon.com?size=128" },
+    { name: "Microsoft", sector: "Software", logo: "https://logo.clearbit.com/microsoft.com?size=128" },
+    { name: "Tesla", sector: "Automotive", logo: "https://logo.clearbit.com/tesla.com?size=128" },
+    { name: "Netflix", sector: "Entertainment", logo: "https://logo.clearbit.com/netflix.com?size=128" },
+    { name: "Adobe", sector: "Creative", logo: "https://logo.clearbit.com/adobe.com?size=128" }
   ];
 
   return (
-    <section className="relative py-24 overflow-hidden">
+    <section id="clients" className="relative py-16 sm:py-24 md:py-32 bg-darker overflow-hidden">
       {/* Background elements */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-dark to-dark/80" />
@@ -26,22 +26,22 @@ const Clients = () => {
       </div>
 
       {/* Container */}
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="container mx-auto px-4 md:px-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-20"
+          className="text-center max-w-3xl mx-auto mb-16"
         >
           <span className="inline-block mb-4 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium">
             Our Partners
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Trusted by <span className="text-primary">industry leaders</span>
+          <h2 className="text-3xl md:text-5xl font-poppins font-bold text-white mb-6">
+            Trusted by industry <span className="text-primary">leaders</span>
           </h2>
-          <p className="max-w-2xl mx-auto text-lg text-white/70">
+          <p className="text-lg text-white/70 max-w-2xl mx-auto mb-12">
             We collaborate with visionary companies to create digital excellence
           </p>
         </motion.div>
@@ -70,22 +70,21 @@ const Clients = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="mb-24"
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 md:gap-8 mb-24"
         >
-          <div className="flex flex-wrap justify-center gap-8">
-            {clients.map((client, i) => (
-              <motion.div
-                key={client.name}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-                className="w-40 h-20 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center hover:border-primary/50 transition-colors"
-              >
-                <span className="text-white font-medium">{client.name}</span>
-              </motion.div>
-            ))}
-          </div>
+          {clients.map((client, i) => (
+            <motion.div
+              key={client.name}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.05 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.08 }}
+              className="p-6 sm:p-8 rounded-2xl bg-dark border border-white/10 hover:border-primary/50 shadow-lg hover:shadow-xl overflow-hidden transition-all duration-300 flex items-center justify-center"
+            >
+              <img src={client.logo} alt={client.name} className="h-12 object-contain grayscale filter hover:grayscale-0 transition duration-300" />
+            </motion.div>
+          ))}
         </motion.div>
 
         {/* Testimonial */}

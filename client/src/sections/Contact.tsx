@@ -133,7 +133,7 @@ const Contact = () => {
           className="mb-16 text-center"
         >
           <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            Get In Touch
+            Get In <span className="text-primary">Touch</span>
           </h2>
           <p className="text-xl text-white/70 max-w-2xl mx-auto">
             Have a project in mind? We'd love to hear from you.

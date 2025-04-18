@@ -84,7 +84,9 @@ const DesignExpertise = () => {
               }}
             />
             
-            <h2 className="text-3xl md:text-5xl font-poppins font-bold mb-6 relative z-10">Design Expertise</h2>
+            <h2 className="text-3xl md:text-5xl font-poppins font-bold mb-6 relative z-10">
+              Design <span className="text-primary">Expertise</span>
+            </h2>
             <p className="text-xl text-white/70 mb-8">
               We blend aesthetics with functionality to craft designs that not only look beautiful but drive real business results.
             </p>
@@ -164,7 +166,9 @@ const DesignExpertise = () => {
           className="mt-32 relative"
         >
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-poppins font-bold mb-6">Our Design Tools & Technologies</h2>
+            <h2 className="text-3xl md:text-4xl font-poppins font-bold mb-6">
+              Our Design Tools & <span className="text-primary">Technologies</span>
+            </h2>
             <p className="text-xl text-white/70 max-w-2xl mx-auto">We leverage industry-leading tools and technologies to deliver exceptional design solutions.</p>
           </div>
           

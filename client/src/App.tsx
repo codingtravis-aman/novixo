@@ -39,7 +39,7 @@ function Router() {
 
   return (
     <>
-      <div className="hidden md:block">
+      <div>
         <Cursor />
       </div>
       <div className="progress-bar fixed top-0 left-0 h-1 bg-primary z-50" style={{ width: '0%' }} />

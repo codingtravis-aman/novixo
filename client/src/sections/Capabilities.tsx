@@ -92,17 +92,11 @@ const Capabilities = () => {
           viewport={{ once: true, margin: "-100px" }}
           className="text-center max-w-3xl mx-auto mb-16 md:mb-24"
         >
-          <motion.span 
-            className="inline-block text-primary font-medium mb-4"
-            variants={itemVariants}
-          >
-            Our Capabilities
-          </motion.span>
           <motion.h2 
             className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6"
             variants={itemVariants}
           >
-            Transforming Ideas into <span className="text-primary">Digital Reality</span>
+            Ideas In <span className="text-primary">Reality</span>
           </motion.h2>
           <motion.p 
             className="text-white/70 text-base sm:text-lg"

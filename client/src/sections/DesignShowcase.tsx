@@ -43,7 +43,9 @@ const DesignShowcase = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-5xl font-poppins font-bold mb-6">Design that Delivers</h2>
+          <h2 className="text-3xl md:text-5xl font-poppins font-bold mb-6">
+            Design that <span className="text-primary">Delivers</span>
+          </h2>
           <p className="text-xl text-white/70 max-w-3xl mx-auto">
             Our collaborative approach combines creative exploration with technical precision to create distinctive digital experiences.
           </p>
@@ -73,7 +75,9 @@ const DesignShowcase = () => {
               <div className="flex flex-col md:flex-row justify-between items-start md:items-end">
                 <div className="mb-6 md:mb-0">
                   <span className="inline-block px-4 py-1 rounded-full bg-primary/20 text-primary text-sm font-medium mb-4">Interactive Design</span>
-                  <h3 className="text-2xl md:text-4xl font-poppins font-bold mb-3">Immersive Experiences</h3>
+                  <h3 className="text-2xl md:text-4xl font-poppins font-bold mb-3">
+                    Immersive <span className="text-red-500">Experiences</span>
+                  </h3>
                   <p className="text-white/70 max-w-2xl">Creating digital products that merge functionality with delight, driving engagement through intuitive design and seamless interactions.</p>
                 </div>
                 <motion.a

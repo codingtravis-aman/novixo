@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'wouter';
 import MobileMenu from './MobileMenu';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,50 +27,86 @@ const Navbar = () => {
       <div className="container mx-auto px-4 md:px-8 flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="z-50">
-          <motion.h1 
-            className="text-3xl font-poppins font-bold text-white"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
           >
-            NOVIXO
-          </motion.h1>
+            <h1 className="text-3xl font-poppins font-bold bg-gradient-to-r from-primary to-white bg-clip-text text-transparent flex space-x-1">
+              {['N','O','V','I','X','O'].map((char, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ y: -10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.1 + i * 0.1, type: 'spring', stiffness: 300 }}
+                  whileHover={{ scale: 1.2, color: '#ffffff' }}
+                  className="cursor-pointer"
+                >
+                  {char}
+                </motion.span>
+              ))}
+            </h1>
+          </motion.div>
         </Link>
         
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-6">
-          <Link href="/work" className="text-white/80 hover:text-primary transition-colors">Work</Link>
+        <motion.ul
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="hidden md:flex items-center space-x-6"
+        >
+          <motion.li whileHover={{ y: -2 }} whileTap={{ scale: 0.95 }} transition={{ type: 'spring', stiffness: 300 }}>
+            <Link href="/work" className="text-white/80 hover:text-primary transition-colors">Work</Link>
+          </motion.li>
           
           {/* Services Dropdown */}
-          <div className="relative group">
+          <motion.li
+            className="relative"
+            onMouseEnter={() => setServicesOpen(true)}
+            onMouseLeave={() => setServicesOpen(false)}
+            whileHover={{ y: -2 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+          >
             <button className="text-white/80 hover:text-primary transition-colors flex items-center">
               Services
-              <svg className="w-4 h-4 ml-1 transition-transform duration-200 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-4 h-4 ml-1 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
-            
-            <div className="absolute left-0 mt-2 w-64 bg-dark/90 backdrop-blur-lg border border-white/10 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-              <div className="p-4 space-y-3">
-                <Link href="/devops" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">DevOps</Link>
-                <Link href="/influencer-marketing" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">Influencer Marketing</Link>
-                <Link href="/ux-ui-design" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">UX/UI Design</Link>
-                <Link href="/web-development" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">Web Development</Link>
-                <Link href="/data-analysis" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">Data Analysis</Link>
-                <Link href="/cyber-security" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">Cyber Security</Link>
-                <Link href="/mobile-development" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">Mobile Development</Link>
-                <Link href="/digital-marketing" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">Digital Marketing</Link>
-              </div>
-            </div>
-          </div>
+            <AnimatePresence>
+              {servicesOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute left-0 mt-2 w-64 bg-dark/90 backdrop-blur-lg border border-white/10 rounded-lg shadow-xl z-50 overflow-hidden"
+                >
+                  <div className="p-4 space-y-3">
+                    <Link href="/devops" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">DevOps</Link>
+                    <Link href="/influencer-marketing" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">Influencer Marketing</Link>
+                    <Link href="/ux-ui-design" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">UX/UI Design</Link>
+                    <Link href="/web-development" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">Web Development</Link>
+                    <Link href="/data-analysis" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">Data Analysis</Link>
+                    <Link href="/cyber-security" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">Cyber Security</Link>
+                    <Link href="/mobile-development" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">Mobile Development</Link>
+                    <Link href="/digital-marketing" className="block px-4 py-2 text-white/80 hover:text-primary hover:bg-white/5 rounded-md transition-colors">Digital Marketing</Link>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.li>
           
-          <Link href="/case-studies" className="text-white/80 hover:text-primary transition-colors">Case Studies</Link>
-          <Link href="/about" className="text-white/80 hover:text-primary transition-colors">About</Link>
-          <Link href="/contact" className="text-white/80 hover:text-primary transition-colors">Contact</Link>
-          <Link href="/careers" className="text-white/80 hover:text-primary transition-colors">Careers</Link>
-          <Link href="/insights" className="text-white/80 hover:text-primary transition-colors">Insights</Link>
-          
-        </nav>
+          {/* Other nav items */}
+          {['/case-studies','/about','/contact','/careers','/insights'].map(path => (
+            <motion.li key={path} whileHover={{ y: -2 }} whileTap={{ scale: 0.95 }} transition={{ type: 'spring', stiffness: 300 }}>
+              <Link href={path} className="text-white/80 hover:text-primary transition-colors">
+                {path.slice(1).replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
+              </Link>
+            </motion.li>
+          ))}
+        </motion.ul>
         
         {/* Mobile Menu Toggle */}
         <button 
